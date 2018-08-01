@@ -14,8 +14,6 @@ func SelectAllItems() (items domain.Items, err error) {
 		return
 	}
 
-	log.Println("hoge")
-
 	defer stmt.Close()
 	for stmt.Next() {
 		var id int64
