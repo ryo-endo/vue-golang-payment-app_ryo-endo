@@ -11,7 +11,7 @@ import (
 func GetList(c Context) {
 	res, err := db.SelectAllItems()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, nil)
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusOK, res)
@@ -21,13 +21,13 @@ func GetList(c Context) {
 func GetItem(c Context) {
 	identifer, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, nil)
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 
 	res, err := db.SelectItem(int64(identifer))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, nil)
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 

@@ -18,14 +18,14 @@ func Charge(c Context) {
 
 	identifer, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, nil)
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 
 	// item取得
 	res, err := db.SelectItem(int64(identifer))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, nil)
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 
@@ -41,7 +41,7 @@ func Charge(c Context) {
 	// gRPCと接続
 	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
-		c.JSON(http.StatusForbidden, nil)
+		c.JSON(http.StatusForbidden, err)
 		return
 	}
 	defer conn.Close()
@@ -50,7 +50,7 @@ func Charge(c Context) {
 
 	gres, err := client.Charge(context.Background(), greq)
 	if err != nil {
-		c.JSON(http.StatusForbidden, nil)
+		c.JSON(http.StatusForbidden, err)
 		return
 	}
 
